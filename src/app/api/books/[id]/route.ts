@@ -1,62 +1,57 @@
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
-import mockBooks from "@/data/mockBook";
-
-const books = [...mockBooks];
+import { db } from "@/lib/firebase";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const id = parseInt(params.id, 10);
-  const book = books.find((b) => b.id === id);
+  try {
+    const docRef = doc(db, "books", params.id);
+    const docSnap = await getDoc(docRef);
 
-  if (!book) {
+    if (!docSnap.exists()) {
+      return NextResponse.json(
+        { message: "책을 찾을 수 없습니다." },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json({ id: docSnap.id, ...docSnap.data() });
+  } catch (error) {
     return NextResponse.json(
-      { message: "책을 찾을 수 없습니다." },
-      { status: 404 },
+      { error: "책을 찾을수 없습니다" },
+      { status: 500 },
     );
   }
-
-  return NextResponse.json(book);
 }
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const id = parseInt(params.id, 10);
-  const body = await request.json();
+  try {
+    const body = await request.json();
+    const docRef = doc(db, "books", params.id);
+    await updateDoc(docRef, body);
 
-  const index = books.findIndex((b) => b.id === id);
-
-  if (index === -1) {
-    return NextResponse.json(
-      { message: "책을 찾을 수 없습니다." },
-      { status: 404 },
-    );
+    const updatedDoc = await getDoc(docRef);
+    return NextResponse.json({ id: updatedDoc.id, ...updatedDoc.data() });
+  } catch (error) {
+    return NextResponse.json({ error: "수정에 실패했습니다" }, { status: 500 });
   }
-
-  books[index] = { ...books[index], ...body };
-
-  return NextResponse.json(books[index]);
 }
 
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const id = parseInt(params.id, 10);
-  const index = books.findIndex((b) => b.id === id);
-
-  if (index === -1) {
-    return NextResponse.json(
-      { message: "책을 찾을 수 없습니다." },
-      { status: 404 },
-    );
+  try {
+    const docRef = doc(db, "books", params.id);
+    await deleteDoc(docRef);
+    return NextResponse.json({ message: "삭제되었습니다." });
+  } catch (error) {
+    return NextResponse.json({ error: "삭제에 실패했습니다" }, { status: 500 });
   }
-
-  books.splice(index, 1);
-
-  return NextResponse.json({ message: "삭제되었습니다." });
 }
