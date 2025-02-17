@@ -1,37 +1,64 @@
+import {
+  addDoc,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
-import mockBooks from "@/data/mockBook";
-
-const books = [...mockBooks];
+import { db } from "@/lib/firebase";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
-  const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 10;
+  try {
+    const { searchParams } = request.nextUrl;
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 10;
 
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
+    const booksRef = collection(db, "books");
+    // 생성일 기준 내림차순 정렬 (최신순)
+    const q = query(booksRef, orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
 
-  const paginatedBooks = books.slice(startIndex, endIndex);
+    const allBooks = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-  return NextResponse.json({
-    books: paginatedBooks,
-    total: books.length,
-    currentPage: page,
-    totalPages: Math.ceil(books.length / limit),
-  });
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedBooks = allBooks.slice(startIndex, endIndex);
+
+    return NextResponse.json({
+      books: paginatedBooks,
+      total: allBooks.length,
+      currentPage: page,
+      totalPages: Math.ceil(allBooks.length / limit),
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "책을 가져오는데 실패했습니다" },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  try {
+    const body = await request.json();
+    const booksRef = collection(db, "books");
 
-  const newBook = {
-    ...body,
-    id: books.length > 0 ? Math.max(...books.map((b) => b.id)) + 1 : 1,
-    salesCount: 0,
-  };
+    const docRef = await addDoc(booksRef, {
+      ...body,
+      salesCount: 0,
+      createdAt: new Date(),
+    });
 
-  books.push(newBook);
-
-  return NextResponse.json(newBook, { status: 201 });
+    return NextResponse.json({ id: docRef.id, ...body }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "책을 추가하는데 실패했습니다" },
+      { status: 500 },
+    );
+  }
 }
