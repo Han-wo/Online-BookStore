@@ -29,7 +29,8 @@
       "@/icons/*": ["public/icons/*"],
       "@/utils/*": ["src/utils/*"],
       "@/constants/*": ["src/constants/*"],
-      "@/public/*": ["public/*"]
+      "@/public/*": ["public/*"],
+      "@/data/*": ["src/data/*"]
     }
   },
   "include": [
