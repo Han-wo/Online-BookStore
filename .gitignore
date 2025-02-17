@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
+.eslintcache
 
 # testing
 /coverage
@@ -28,7 +29,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
-.eslintcache
+
 # vercel
 .vercel
 
