@@ -1,35 +1,29 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { SlPencil } from "react-icons/sl";
 
-import bookAPI from "@/service/api/book";
+import { useDeleteBook } from "@/hooks/useBooks";
 import type { Book } from "@/types/book";
 
 import Button from "../common/Button";
 
 interface BookCardProps {
   book: Book;
-  onRefresh: () => void;
 }
 
-export default function BookCard({ book, onRefresh }: BookCardProps) {
+export default function BookCard({ book }: BookCardProps) {
   const router = useRouter();
-  const [isDeleting, setIsDeleting] = useState(false);
+  const deleteBook = useDeleteBook();
 
   const handleDelete = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
-      setIsDeleting(true);
-      await bookAPI.deleteBook(book.id);
-      onRefresh();
+      await deleteBook.mutateAsync(book.id);
     } catch (error) {
       alert("삭제에 실패했습니다.");
-    } finally {
-      setIsDeleting(false);
     }
   };
 
@@ -60,7 +54,7 @@ export default function BookCard({ book, onRefresh }: BookCardProps) {
           type="button"
           variant="secondary"
           onClick={handleDelete}
-          disabled={isDeleting}
+          disabled={deleteBook.isPending}
           className="flex items-center gap-1 text-red-600 hover:bg-red-50"
         >
           <IoTrashOutline className="size-15" />
