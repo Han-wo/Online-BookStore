@@ -11,12 +11,12 @@ interface TextAreaProps
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ label, error, className, ...props }, ref) => (
     <div>
-      {label && <label className="mb-1.5 block text-14-500">{label}</label>}
+      {label && <label className="mb-1.5 block text-16-500">{label}</label>}
       <textarea
         {...props}
         ref={ref}
         className={cn(
-          "w-full rounded border p-2 min-h-100 resize-none",
+          "w-full rounded border p-2 min-h-100 resize-none h-300",
           error && "border-red-500",
           className,
         )}

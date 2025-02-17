@@ -11,13 +11,13 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, unit, className, ...props }, ref) => (
     <div>
-      {label && <label className="mb-1.5 block text-14-500">{label}</label>}
+      {label && <label className="mb-1.5 block text-16-500">{label}</label>}
       <div className="relative">
         <input
           {...props}
           ref={ref}
           className={cn(
-            "w-full rounded border p-2",
+            "w-full rounded border p-2 h-30",
             error && "border-red-500",
             className,
           )}

@@ -37,7 +37,7 @@ export default function BookForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Input
         label="제목"
         {...register("title")}
@@ -76,7 +76,7 @@ export default function BookForm() {
         />
       </div>
 
-      <div className="flex gap-3">
+      <div className="mt-30 flex gap-3">
         <Button type="submit" disabled={isSubmitting || !isValid}>
           {isSubmitting ? "등록 중..." : "등록하기"}
         </Button>
