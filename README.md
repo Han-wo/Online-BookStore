@@ -1,6 +1,8 @@
 # Online Bookstore
 온라인 서점을 위한 웹 애플리케이션입니다. 책을 등록, 수정, 삭제하고 목록을 조회할 수 있습니다.
 
+## 배포주소 : https://online-book-store-lake.vercel.app/
+
 ## 기능
 - 책 목록 조회 (페이지네이션)
 - 책 검색 (제목, 저자)
