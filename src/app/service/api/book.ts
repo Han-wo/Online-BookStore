@@ -2,9 +2,17 @@ import type { Book, CreateBookInput, UpdateBookInput } from "@/types/book";
 
 const bookAPI = {
   // 책 목록 조회
-  getBooks: async (): Promise<{ books: Book[]; total: number }> => {
+  getBooks: async (
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<{
+    books: Book[];
+    total: number;
+    currentPage: number;
+    totalPages: number;
+  }> => {
     try {
-      const response = await fetch("/api/books");
+      const response = await fetch(`/api/books?page=${page}&limit=${limit}`);
       if (!response.ok) throw new Error("도서목록 불러오기 실패");
       return await response.json();
     } catch (error) {
