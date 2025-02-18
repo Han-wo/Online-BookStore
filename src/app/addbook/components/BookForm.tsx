@@ -3,9 +3,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/common/Button";
+import ImageUpload from "@/components/common/ImageUpload";
 import Input from "@/components/common/Input";
 import TextArea from "@/components/common/TextArea";
 import bookSchema from "@/lib/validations/books";
@@ -25,42 +27,47 @@ export default function BookForm({
 }: BookFormProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (initialValues?.imageUrl) {
+      setImageUrl(initialValues.imageUrl);
+    }
+  }, [initialValues]);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
     defaultValues: initialValues,
+    mode: "onChange",
   });
 
-  const createBook = (data: BookFormValues) =>
-    bookAPI.createBook({
-      ...data,
-      price: Number(data.price),
-      stock: Number(data.stock),
-    });
-
-  const updateBook = (data: BookFormValues) => {
-    if (!bookId) throw new Error("Book ID is required for update");
-    return bookAPI.updateBook(bookId, {
-      ...data,
-      price: Number(data.price),
-      stock: Number(data.stock),
-    });
-  };
-
   const mutation = useMutation({
-    mutationFn: mode === "edit" ? updateBook : createBook,
+    mutationFn:
+      mode === "edit" && bookId
+        ? (data: BookFormValues) =>
+            bookAPI.updateBook(bookId, {
+              ...data,
+              imageUrl,
+              price: Number(data.price),
+              stock: Number(data.stock),
+            })
+        : (data: BookFormValues) =>
+            bookAPI.createBook({
+              ...data,
+              imageUrl,
+              price: Number(data.price),
+              stock: Number(data.stock),
+            }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["books"] });
       router.push("/");
     },
     onError: () => {
-      const message =
-        mode === "edit" ? "수정에 실패했습니다." : "등록에 실패했습니다.";
-      alert(message);
+      alert(mode === "edit" ? "수정에 실패했습니다." : "등록에 실패했습니다.");
     },
   });
 
@@ -69,12 +76,18 @@ export default function BookForm({
   };
 
   const getSubmitButtonText = () => {
-    if (isSubmitting) return "처리 중...";
+    if (mutation.isPending) return "처리 중...";
     return mode === "edit" ? "수정하기" : "등록하기";
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <ImageUpload
+        value={imageUrl}
+        onChange={(url) => setImageUrl(url)}
+        onRemove={() => setImageUrl("")}
+      />
+
       <Input
         label="제목"
         placeholder="제목을 입력해주세요"
@@ -119,10 +132,18 @@ export default function BookForm({
       </div>
 
       <div className="flex gap-2">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          disabled={isSubmitting || mutation.isPending || !isValid}
+        >
           {getSubmitButtonText()}
         </Button>
-        <Button type="button" variant="secondary" onClick={() => router.back()}>
+        <Button
+          type="button"
+          disabled={isSubmitting || mutation.isPending}
+          variant="secondary"
+          onClick={() => router.back()}
+        >
           취소
         </Button>
       </div>
