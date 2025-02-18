@@ -61,7 +61,7 @@
 ## 설치 및 실행 방법
 ```bash
 # 저장소 클론
-git clone [repository-url]
+git clone https://github.com/Han-wo/Online-BookStore.git
 
 # 의존성 설치
 npm install
