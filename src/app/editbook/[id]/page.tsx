@@ -27,9 +27,7 @@ export default function EditBookPage({ params }: EditBookPageProps) {
     );
   }
 
-  if (!book) {
-    return null;
-  }
+  if (!book) return null;
 
   const initialValues: BookFormValues = {
     title: book.title,
@@ -37,6 +35,7 @@ export default function EditBookPage({ params }: EditBookPageProps) {
     description: book.description,
     price: book.price,
     stock: book.stock,
+    imageUrl: book.imageUrl,
   };
 
   return (

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
 import bookAPI from "@/service/api/book";
 
@@ -10,7 +11,6 @@ interface BookDetailProps {
   open: boolean;
   onClose: () => void;
 }
-
 export default function BookDetail({ bookId, open, onClose }: BookDetailProps) {
   const { data: book, isPending } = useQuery({
     queryKey: ["book", bookId],
@@ -37,6 +37,20 @@ export default function BookDetail({ bookId, open, onClose }: BookDetailProps) {
 
     return (
       <>
+        {book.imageUrl && (
+          <div className="px-10 pt-10">
+            <div className="relative mb-20 mt-10 h-300 w-full">
+              <Image
+                src={book.imageUrl}
+                alt={book.title}
+                fill
+                className="rounded-lg object-contain"
+                priority
+              />
+            </div>
+          </div>
+        )}
+
         <div className="flex gap-30 px-10 py-20">
           <div>
             <h3 className="text-16-500 text-gray-700">저자</h3>
