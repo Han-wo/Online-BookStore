@@ -27,6 +27,7 @@ const bookSchema = z.object({
       required_error: "가격을 입력해주세요",
     })
     .min(1, "가격을 입력해주세요"),
+  imageUrl: z.string().optional(),
 });
 
 export default bookSchema;
