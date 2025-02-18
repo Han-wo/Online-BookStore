@@ -1,136 +1,167 @@
-# Online Bookstore
+# Online BookStore
+
+
 온라인 서점을 위한 웹 애플리케이션입니다. 책을 등록, 수정, 삭제하고 목록을 조회할 수 있습니다.
 
-## 배포주소 : https://online-book-store-lake.vercel.app/
+## 🔗 배포 링크
+[Online BookStore](https://online-book-store-lake.vercel.app/)
 
-## 기능
-- 책 목록 조회 (페이지네이션)
-- 책 검색 (제목, 저자)
-- 책 상세 정보 조회 (모달)
-- 책 등록/수정/삭제
-- 실시간 재고 관리
-- 이미지 업로드 및 관리 (Cloudinary)
+## 🖥️ 프로젝트 소개
+책의 기본 정보(제목, 저자, 가격, 수량 등)와 이미지를 등록하고 조회할 수 있는 온라인 서점 관리자 페이지입니다.
 
-## 기술 스택
+## ⚙️ 개발 환경
+- **Frontend**: Next.js 14, TypeScript
+- **Backend**: Firebase (Firestore)
+- **이미지 저장소**: Cloudinary
+- **배포**: Vercel
+
+## 📌 주요 기능
+### 책 목록
+- 등록된 모든 책 목록 조회
+- 페이지당 10개씩 표시
+- 제목/저자 기반 실시간 검색
+- 클릭 시 상세 정보 모달로 표시
+
+### 책 관리
+- 새로운 책 등록
+- 기존 책 정보 수정
+- 책 삭제 (삭제 전 확인)
+
+### 이미지 업로드
+- Cloudinary 위젯을 통한 이미지 업로드
+- 업로드된 이미지 URL을 Firestore에 저장
+- 이미지 수정 및 삭제 기능
+
+## 🛠️ 사용 기술
 ### Frontend
-- Next.js 14
-- TypeScript
-- React Query (TanStack Query)
-- React Hook Form
-- Zod
-- Tailwind CSS
-- Next Cloudinary
+- `Next.js 14`: App Router, Server Components
+- `TypeScript`: 정적 타입 검사
+- `React Query`: 서버 상태 관리
+- `React Hook Form`: 폼 상태 관리
+- `Zod`: 데이터 유효성 검사
+- `Tailwind CSS`: 스타일링
+- `Next Cloudinary`: 이미지 업로드
 
 ### Backend
-- Firebase (Firestore)
-- Cloudinary (이미지 저장소)
+- `Firebase Firestore`: 데이터베이스
+- `Cloudinary`: 이미지 스토리지
 
-## 주요 기능 설명
-
-### 1. 책 목록 조회
-- 페이지당 10개의 책을 표시
-- 클라이언트 사이드 검색 기능
-- 반응형 그리드 레이아웃
-- 책 커버 이미지 표시
-
-### 2. 책 상세 정보
-- 모달을 통한 상세 정보 표시
-- 제목, 저자, 가격, 재고, 판매량 등 표시
-- 고품질 책 커버 이미지 표시
-
-### 3. 책 관리
-- 새로운 책 등록 (이미지 업로드 포함)
-- 기존 책 정보 수정 (이미지 수정/삭제 가능)
-- 책 삭제 (삭제 확인 대화상자)
-
-### 4. 이미지 처리
-- Cloudinary 이미지 업로드 위젯 통합
-- 자동 이미지 최적화
-- 이미지 크기 조정 및 포맷 최적화
-- 반응형 이미지 처리
-
-### 5. 폼 처리
-- React Hook Form을 사용한 폼 관리
-- Zod를 통한 유효성 검사
-- 실시간 에러 메시지 표시
-- 이미지 업로드 상태 관리
-
-### 6. 데이터 관리
-- React Query를 사용한 서버 상태 관리
-- 낙관적 업데이트
-- 자동 캐시 무효화
-
-## 설치 및 실행 방법
+## 📋 설치 및 실행
+1. 저장소 클론
 ```bash
-# 저장소 클론
 git clone https://github.com/Han-wo/Online-BookStore.git
+```
 
-# 의존성 설치
+2. 의존성 설치
+```bash
 npm install
+```
 
-# 개발 서버 실행
+3. 환경 변수 설정
+`.env.local` 파일 생성:
+```
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+```
+
+4. 개발 서버 실행
+```bash
 npm run dev
 ```
 
-## 환경 변수 설정
-`.env.local` 파일을 프로젝트 루트에 생성하고 다음 변수들을 설정하세요:
-
-```
-# Firebase 설정
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-
-# Cloudinary 설정
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
-```
-
-## 폴더 구조
+## 📁 폴더 구조
 ```
 ├── app/
 │   ├── api/
-│   │   └── books/
+│   │   └── books/     # API 라우트
 │   ├── books/
-│   │   └── edit/
-│   └── page.tsx
+│   │   └── edit/      # 책 수정 페이지
+│   └── page.tsx       # 메인 페이지
 ├── components/
-│   ├── books/
-│   │   ├── BookCard.tsx
-│   │   ├── BookDetail.tsx
-│   │   ├── BookForm.tsx
-│   │   └── BookList.tsx
-│   └── common/
-│       ├── Button.tsx
-│       ├── Input.tsx
-│       ├── ImageUpload.tsx
-│       └── Modal.tsx
-├── hooks/
-│   └── useBooks.ts
-├── lib/
-│   ├── firebase.ts
-│   └── validations/
-│       └── books.ts
-└── types/
-    └── book.ts
+│   ├── books/         # 책 관련 컴포넌트
+│   └── common/        # 공통 컴포넌트
+├── hooks/             # 커스텀 훅
+├── lib/              # 유틸리티
+└── types/            # 타입 정의
 ```
 
-## 추가 설정
+## 🔒 구현 내용
 
-### Cloudinary 설정
-1. Cloudinary 계정 생성
-2. Upload preset 생성 (Settings > Upload > Upload presets)
-3. Signing Mode를 'Unsigned'로 설정
-4. 환경 변수에 cloud name 추가
+### 책 목록
+```typescript
+export default function BookList() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['books'],
+    queryFn: () => bookAPI.getBooks()
+  });
 
-### Next.js 설정
-```javascript
-// next.config.js
-module.exports = {
-  images: {
-    domains: ['res.cloudinary.com']
-  }
+  return (
+    // 목록 렌더링 로직
+  );
 }
 ```
+
+### 이미지 업로드
+```typescript
+export default function ImageUpload({ onChange, value }: ImageUploadProps) {
+  return (
+    <CldUploadWidget
+      onSuccess={(result) => onChange(result.info.secure_url)}
+      uploadPreset="books_preset"
+    >
+      {/* 업로드 UI */}
+    </CldUploadWidget>
+  );
+}
+```
+
+### 폼 유효성 검사
+```typescript
+
+const bookSchema = z.object({
+  title: z
+    .string({
+      required_error: "제목을 입력해주세요",
+    })
+    .min(1, "제목을 입력해주세요"),
+  author: z
+    .string({
+      required_error: "저자를 입력해주세요",
+    })
+    .min(1, "저자를 입력해주세요"),
+  description: z
+    .string({
+      required_error: "설명을 입력해주세요",
+    })
+    .min(1, "설명을 입력해주세요"),
+  stock: z.coerce
+    .number({
+      required_error: "수량을 입력해주세요",
+    })
+    .min(1, "수량을 입력해주세요"),
+
+  price: z.coerce
+    .number({
+      required_error: "가격을 입력해주세요",
+    })
+    .min(1, "가격을 입력해주세요"),
+  imageUrl: z.string().optional(),
+});
+
+export default bookSchema;
+```
+
+## 🚀 개선 사항
+- [ ] 로그인/회원가입 기능 추가
+- [ ] 판매 통계 기능 추가
+- [ ] 이미지 최적화 개선
+- [ ] 재고 알림 기능 추가
+
+
+## 👤 제작자
+- GitHub: [@Han-wo](https://github.com/Han-wo)
