@@ -9,7 +9,7 @@ interface BookGridProps {
 }
 
 export default function BookGrid({ currentPage, keyword }: BookGridProps) {
-  const { data, isLoading } = useBooks(currentPage); // currentPage에 따라 데이터를 가져옵니다.
+  const { data, isLoading } = useBooks(currentPage);
   const books = data?.books || [];
 
   // 필터링 로직 (검색어가 있으면 필터링)
@@ -41,7 +41,7 @@ export default function BookGrid({ currentPage, keyword }: BookGridProps) {
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
         {filteredBooks.map((book) => (
           <BookCard key={book.id} book={book} />
         ))}

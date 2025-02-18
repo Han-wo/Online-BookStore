@@ -35,7 +35,7 @@ export default function BookList() {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto py-50">
       <BookHeader />
       <BookSearch keyword={keyword} onSearch={handleSearch} className="mb-6" />
       <BookGrid currentPage={currentPage} keyword={keyword} />

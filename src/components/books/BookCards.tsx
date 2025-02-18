@@ -28,8 +28,8 @@ export default function BookCard({ book }: BookCardProps) {
   };
 
   return (
-    <div className="shadow-sm rounded-lg border bg-white p-4">
-      <h2 className="mb-10 text-20-500 font-bold">{book.title}</h2>
+    <div className="shadow-sm rounded-lg border bg-white px-6 py-8">
+      <h2 className="mb-10 h-40 text-18-500 font-bold">{book.title}</h2>
       <p className="mb-5 text-14-700 text-gray-800">저자: {book.author}</p>
       <div className="mb-4 line-clamp-2 min-h-30 text-14-500 text-gray-600">
         {book.description}
