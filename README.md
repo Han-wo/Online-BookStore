@@ -30,7 +30,22 @@
 ### 이미지 업로드
 - Cloudinary 위젯을 통한 이미지 업로드
 - 업로드된 이미지 URL을 Firestore에 저장
+- 자동 이미지 최적화
+- 이미지 크기 조정 및 포맷 최적화
 - 이미지 수정 및 삭제 기능
+
+### 폼 처리
+- React Hook Form을 사용한 폼 관리
+- Zod를 통한 유효성 검사
+- 실시간 에러 메시지 표시
+- 이미지 업로드 상태 관리
+
+  
+### 데이터 관리
+- React Query를 사용한 서버 상태 관리
+- 낙관적 업데이트
+- 자동 캐시 무효화
+- 필요한 페이지 캐싱작업
 
 ## 🛠️ 사용 기술
 ### Frontend
@@ -139,18 +154,7 @@ const bookSchema = z.object({
       required_error: "설명을 입력해주세요",
     })
     .min(1, "설명을 입력해주세요"),
-  stock: z.coerce
-    .number({
-      required_error: "수량을 입력해주세요",
-    })
-    .min(1, "수량을 입력해주세요"),
-
-  price: z.coerce
-    .number({
-      required_error: "가격을 입력해주세요",
-    })
-    .min(1, "가격을 입력해주세요"),
-  imageUrl: z.string().optional(),
+...
 });
 
 export default bookSchema;
@@ -158,9 +162,6 @@ export default bookSchema;
 
 ## 🚀 개선 사항
 - [ ] 로그인/회원가입 기능 추가
-- [ ] 판매 통계 기능 추가
-- [ ] 이미지 최적화 개선
-- [ ] 재고 알림 기능 추가
 
 
 ## 👤 제작자
